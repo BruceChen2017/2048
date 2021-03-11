@@ -8,27 +8,27 @@ function HTMLActuator() {
 }
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
-  var self = this;
+  var that = this;
 
   window.requestAnimationFrame(function () {
-    self.clearContainer(self.tileContainer);
+    that.clearContainer(that.tileContainer);
 
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
         if (cell) {
-          self.addTile(cell);
+          that.addTile(cell);
         }
       });
     });
 
-    self.updateScore(metadata.score);
-    self.updateBestScore(metadata.bestScore);
+    that.updateScore(metadata.score);
+    that.updateBestScore(metadata.bestScore);
 
     if (metadata.terminated) {
       if (metadata.over) {
-        self.message(false); // You lose
+        that.message(false); // You lose
       } else if (metadata.won) {
-        self.message(true); // You win!
+        that.message(true); // You win!
       }
     }
 
@@ -47,7 +47,7 @@ HTMLActuator.prototype.clearContainer = function (container) {
 };
 
 HTMLActuator.prototype.addTile = function (tile) {
-  var self = this;
+  var that = this;
 
   var wrapper   = document.createElement("div");
   var inner     = document.createElement("div");
@@ -67,8 +67,8 @@ HTMLActuator.prototype.addTile = function (tile) {
   if (tile.previousPosition) {
     // Make sure that the tile gets rendered in the previous position first
     window.requestAnimationFrame(function () {
-      classes[2] = self.positionClass({ x: tile.x, y: tile.y });
-      self.applyClasses(wrapper, classes); // Update the position
+      classes[2] = that.positionClass({ x: tile.x, y: tile.y });
+      that.applyClasses(wrapper, classes); // Update the position
     });
   } else if (tile.mergedFrom) {
     classes.push("tile-merged");
@@ -76,7 +76,7 @@ HTMLActuator.prototype.addTile = function (tile) {
 
     // Render the tiles that merged
     tile.mergedFrom.forEach(function (merged) {
-      self.addTile(merged);
+      that.addTile(merged);
     });
   } else {
     classes.push("tile-new");

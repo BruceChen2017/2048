@@ -129,7 +129,7 @@ GameManager.prototype.moveTile = function (tile, cell) {
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2: down, 3: left
-  var self = this;
+  var that = this;
 
   if (this.isGameTerminated()) return; // Don't do anything if the game's over
 
@@ -146,33 +146,33 @@ GameManager.prototype.move = function (direction) {
   traversals.x.forEach(function (x) {
     traversals.y.forEach(function (y) {
       cell = { x: x, y: y };
-      tile = self.grid.cellContent(cell);
+      tile = that.grid.cellContent(cell);
 
       if (tile) {
-        var positions = self.findFarthestPosition(cell, vector);
-        var next      = self.grid.cellContent(positions.next);
+        var positions = that.findFarthestPosition(cell, vector);
+        var next      = that.grid.cellContent(positions.next);
 
         // Only one merger per row traversal?
         if (next && next.value === tile.value && !next.mergedFrom) {
           var merged = new Tile(positions.next, tile.value * 2);
           merged.mergedFrom = [tile, next];
 
-          self.grid.insertTile(merged);
-          self.grid.removeTile(tile);
+          that.grid.insertTile(merged);
+          that.grid.removeTile(tile);
 
           // Converge the two tiles' positions
           tile.updatePosition(positions.next);
 
           // Update the score
-          self.score += merged.value;
+          that.score += merged.value;
 
           // The mighty 2048 tile
-          if (merged.value === 2048) self.won = true;
+          if (merged.value === 2048) that.won = true;
         } else {
-          self.moveTile(tile, positions.farthest);
+          that.moveTile(tile, positions.farthest);
         }
 
-        if (!self.positionsEqual(cell, tile)) {
+        if (!that.positionsEqual(cell, tile)) {
           moved = true; // The tile moved from its original cell!
         }
       }
@@ -241,7 +241,7 @@ GameManager.prototype.movesAvailable = function () {
 
 // Check for available matches between tiles (more expensive check)
 GameManager.prototype.tileMatchesAvailable = function () {
-  var self = this;
+  var that = this;
 
   var tile;
 
@@ -251,10 +251,10 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
       if (tile) {
         for (var direction = 0; direction < 4; direction++) {
-          var vector = self.getVector(direction);
+          var vector = that.getVector(direction);
           var cell   = { x: x + vector.x, y: y + vector.y };
 
-          var other  = self.grid.cellContent(cell);
+          var other  = that.grid.cellContent(cell);
 
           if (other && other.value === tile.value) {
             return true; // These two tiles can be merged

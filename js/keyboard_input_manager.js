@@ -32,7 +32,7 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 };
 
 KeyboardInputManager.prototype.listen = function () {
-  var self = this;
+  var that = this;
 
   var map = {
     38: 0, // Up
@@ -58,13 +58,13 @@ KeyboardInputManager.prototype.listen = function () {
     if (!modifiers) {
       if (mapped !== undefined) {
         event.preventDefault();
-        self.emit("move", mapped);
+        that.emit("move", mapped);
       }
     }
 
     // R key restarts the game
     if (!modifiers && event.which === 82) {
-      self.restart.call(self, event);
+      that.restart.call(that, event);
     }
   });
 
@@ -122,7 +122,7 @@ KeyboardInputManager.prototype.listen = function () {
 
     if (Math.max(absDx, absDy) > 10) {
       // (right : left) : (down : up)
-      self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
+      that.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
     }
   });
 };
