@@ -19,11 +19,21 @@ Grid.prototype.init = function () {
   }
 };
 
+/**
+ * check whether cell position is valid
+ * @param {Map} position
+ * @returns {void}
+ */
 Grid.prototype.withinBound = function (position) {
   return position.x >= 0 && position.x < this.size &&
     position.y >= 0 && position.y < this.size;
 };
 
+/**
+ * get tile in that cell
+ * @param {Map} cell
+ * @returns {(Tile | null)}
+ */
 Grid.prototype.cellContent = function (cell) {
   if (this.withinBound(cell)) {
     return this.cells[cell.x][cell.y];
